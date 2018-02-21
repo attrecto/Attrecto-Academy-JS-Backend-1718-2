@@ -1,0 +1,17 @@
+[
+    {
+        "email": "test.elek@test.com",
+        "name": "Test Elek",
+        "password": "elekpwm01"
+    },
+    {
+        "email": "lapos.elemer@test.com",
+        "name": "Lapos Elemér",
+        "password": "elemerpwd01"
+    },
+    {
+        "email": "kis.pista@test.com",
+        "name": "Kiss Pista",
+        "password": "pistapwd01"
+    }
+]
