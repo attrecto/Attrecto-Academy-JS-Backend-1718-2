@@ -4,6 +4,8 @@ global.rootRequired = (name) => {
     return require(__dirname + '/' + name);
 };
 
+global.AppError = require('./common/AppError');
+
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
