@@ -20,7 +20,6 @@ const createUser = async (message) => {
         throw new AppError(400, "User already exists with this email.");
     }
 
-
     //create user
     const createUserQuery = `INSERT INTO users(email, name, password) VALUES (?, ?, ?)`;
 
@@ -31,6 +30,43 @@ const createUser = async (message) => {
     return database.get(selectUserQuery, [email]);
 }
 
+const login = async (message) => {
+    const {
+        data: {email, password}
+    } = message;
+
+    if (!email || !password) {
+        throw new AppError(400, 'Missing or empty fields!');
+    }
+
+
+    const user = await getUserByEmail({email});
+
+    const isValidPassword = await util.validatePassword(user, password);
+    if (!isValidPassword) {
+        throw new AppError(400, 'This email address and password combination is not valid. Please try again!')
+    }
+
+    return util.generateToken(user);
+};
+
+
+const getUserByEmail = async (message) => {
+    const {
+        email
+    } = message;
+
+    await database.open(dbPath);
+
+    if (!email) {
+        throw new AppError(400, 'Missing or empty fields!');
+    }
+
+    const selectUserQuery = `SELECT id, email, name, password FROM users WHERE email= ?`;
+    return database.get(selectUserQuery, [email]);
+};
+
 module.exports = {
-    createUser
+    createUser,
+    login
 }

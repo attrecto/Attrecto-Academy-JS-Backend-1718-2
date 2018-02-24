@@ -1,8 +1,11 @@
 'use strict'
 
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const SALT_ROUNDS = 10;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const TOKEN_LIFETIME = process.env.TOKEN_LIFETIME;
 
 const hashPassword = (plainPassword) => {
     return new Promise((resolve, reject) => {
@@ -15,6 +18,44 @@ const hashPassword = (plainPassword) => {
             }
 
             resolve(hash);
+        });
+    });
+};
+
+const validatePassword = (user, password) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, user.password, (err, res) => {
+            if (err) {
+                return reject(err);
+            }
+
+            if (!res) {
+                return reject(new AppError(400, 'That email address and password combination is not valid. Please try again!'));
+            }
+
+            resolve(true);
+        });
+    });
+};
+
+const generateToken = (user) => {
+    const tokenProperties = {
+        userId: user.id,
+        name: user.name,
+        email: user.email
+    };
+
+    const option = {
+        algorithm: 'HS512',
+        expiresIn: TOKEN_LIFETIME
+    };
+
+    return new Promise((resolve, reject) => {
+        jwt.sign(tokenProperties, JWT_SECRET_KEY, option, (err, token) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve({ token })
         });
     });
 };
@@ -39,5 +80,7 @@ const errorHandling = (e, next) => {
 
 module.exports = {
     hashPassword,
+    validatePassword,
+    generateToken,
     errorHandling
 }

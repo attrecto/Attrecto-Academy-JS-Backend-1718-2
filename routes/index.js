@@ -18,6 +18,19 @@ router.post('/user', async (req, res, next) => {
     }
 })
 
+router.post('/login', async (req, res, next) => {
+    try {
+        const message = {
+            data: req.body
+        };
+
+        const result = await userManager.login(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
+
 router.get('/hello', (req, res, next) => {
     res.send('Hello world!!!');
 });
