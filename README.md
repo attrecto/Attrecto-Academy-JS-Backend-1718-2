@@ -1,3 +1,4 @@
 # Attrecto-Academy-JS-Backend
-# Login lesson codeshare link:
-# https://codeshare.io/2EJNNo
+
+Login lesson codeshare link:
+https://codeshare.io/2EJNNo
