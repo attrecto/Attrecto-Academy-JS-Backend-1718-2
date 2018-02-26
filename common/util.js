@@ -60,6 +60,18 @@ const generateToken = (user) => {
     });
 };
 
+const validateToken = (rawToken) => {
+    const token = rawToken.split(' ')[1];
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, JWT_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                return reject(new AppError(401, 'Failed to authentikate token.'));
+            }
+            resolve(decoded);
+        });
+    });
+}
+
 const errorHandling = (e, next) => {
     try {
         console.log(e);
@@ -82,5 +94,6 @@ module.exports = {
     hashPassword,
     validatePassword,
     generateToken,
+    validateToken,
     errorHandling
 }

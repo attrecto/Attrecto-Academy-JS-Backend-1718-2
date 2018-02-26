@@ -2,8 +2,9 @@
 
 const express = require('express');
 const router = express.Router();
-const { userManager } = rootRequired("manager");
-const util = rootRequired("common/util");
+const { userManager } = rootRequired('manager');
+const util = rootRequired('common/util');
+const authorization = rootRequired('middleware/authorization')
 
 router.post('/user', async (req, res, next) => {
     try {
@@ -31,8 +32,10 @@ router.post('/login', async (req, res, next) => {
     }
 });
 
+router.use(authorization);
+
 router.get('/hello', (req, res, next) => {
-    res.send('Hello world!!!');
+    res.send(`Hello ${req.tokenDetails.name}!`);
 });
 
 module.exports = router;
