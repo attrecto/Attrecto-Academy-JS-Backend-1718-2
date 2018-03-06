@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -70,7 +70,7 @@ const validateToken = (rawToken) => {
             resolve(decoded);
         });
     });
-}
+};
 
 const errorHandling = (e, next) => {
     try {
@@ -96,4 +96,4 @@ module.exports = {
     generateToken,
     validateToken,
     errorHandling
-}
+};

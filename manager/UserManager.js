@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const database = rootRequired('database');
 const util = rootRequired('common/util');
@@ -28,7 +28,7 @@ const createUser = async (message) => {
     const selectUserQuery = `SELECT id, email, name FROM users WHERE email= ?`;
     // no need await here, because in higher level there will be one. 
     return database.get(selectUserQuery, [email]);
-}
+};
 
 const login = async (message) => {
     const {
@@ -69,4 +69,4 @@ const getUserByEmail = async (message) => {
 module.exports = {
     createUser,
     login
-}
+};

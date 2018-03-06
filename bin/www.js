@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const app = require('../app');
 const http = require('http');
@@ -20,7 +20,7 @@ const normalizePort = (val) => {
     }
 
     return false;
-}
+};
 
 /**
  * Event listener for HTTP server "error" event.
@@ -47,7 +47,7 @@ const onError = (error) => {
         default:
             throw error;
     }
-}
+};
 
 /**
  * Event listener for HTTP server "listening" event.
@@ -58,7 +58,7 @@ const onListening = () => {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     console.log('Listening on ' + bind);
-}
+};
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);

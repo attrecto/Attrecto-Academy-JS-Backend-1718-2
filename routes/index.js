@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
 const express = require('express');
 const router = express.Router();
 const { userManager } = rootRequired('manager');
 const util = rootRequired('common/util');
-const authorization = rootRequired('middleware/authorization')
+const authorization = rootRequired('middleware/authorization');
 
 router.post('/user', async (req, res, next) => {
     try {

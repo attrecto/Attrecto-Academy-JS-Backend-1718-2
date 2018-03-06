@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 global.rootRequired = (name) => {
     return require(__dirname + '/' + name);
