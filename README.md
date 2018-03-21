@@ -1,8 +1,6 @@
 # Attrecto-Academy-JS-Backend
 
-#### codeshare link:
-https://codeshare.io/2EJNNo
----
+#### codeshare link: https://codeshare.io/2EJNNo
 
 ### Steps to start server:
 - In terminal:
