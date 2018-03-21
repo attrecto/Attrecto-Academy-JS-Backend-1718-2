@@ -43,6 +43,9 @@ const login = async (message) => {
 
 
     const user = await getUserByEmail({email});
+    if (!user) {
+        throw new AppError(400, 'This email address and password combination is not valid. Please try again!')
+    }
 
     const isValidPassword = await util.validatePassword(user, password);
     if (!isValidPassword) {
