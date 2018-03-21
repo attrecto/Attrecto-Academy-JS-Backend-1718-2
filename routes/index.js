@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { userManager } = rootRequired('manager');
+const { userManager, badgeManager } = rootRequired('manager');
 const util = rootRequired('common/util');
 const authorization = rootRequired('middleware/authorization');
 
@@ -36,6 +36,15 @@ router.use(authorization);
 
 router.get('/hello', (req, res, next) => {
     res.send(`Hello ${req.tokenDetails.name}!`);
+});
+
+router.get('/badge', async (req, res, next) => {
+    try {
+        const result = await badgeManager.getBadges();
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
 });
 
 module.exports = router;
