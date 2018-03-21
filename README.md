@@ -1,20 +1,15 @@
-# Attrecto-Academy-JS-Backend
----
-codeshare link: https://codeshare.io/2EJNNo
-
----
 ### Steps to start server:
-1. In terminal:
-	a. git clone https://github.com/attrecto/Attrecto-Academy-JS-Backend.git
-	b. cd Attrecto-Academy-JS-Backend/
-	c. git checkout login
-	d. npm install
-	e. touch .env
-2. Open project with any IDE (VisualStudio or Webstorm)
-3. Copy the content of sample.env into .env file
-4. Create database/education.db file
-5. In terminal: npm run init-db
-6. In terminal: npm run start
+- In terminal:
+    - git clone https://github.com/attrecto/Attrecto-Academy-JS-Backend.git
+	- cd Attrecto-Academy-JS-Backend/
+	- checkout a branch e.g.: git checkout login
+	- npm install
+	- touch .env
+- Open project with any IDE (VisualStudio or Webstorm)
+- Copy the content of sample.env into .env file
+- Create database/education.db file
+- In terminal: npm run init-db
+- In terminal: npm run start
 
 ### Call web-services with Postman:
 ##### Create user
