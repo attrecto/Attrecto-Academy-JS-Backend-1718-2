@@ -34,6 +34,15 @@ const createBadgeTable = async () => {
     await database.open(dbPath);
     await database.run('DROP TABLE IF EXISTS badges;');
     await database.run('CREATE TABLE badges(id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text);');
+    await database.run(`
+        CREATE TABLE user_badges(
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            user_id integer NOT_NULL, 
+            badge_id integer NOT_NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (badge_id) REFERENCES badges(id)
+        );
+    `);
 
     const query = `INSERT INTO badges(name, description) VALUES (?, ?)`;
     const lstBadge = JSON.parse(fs.readFileSync(badgeDataPath, 'utf8'));
