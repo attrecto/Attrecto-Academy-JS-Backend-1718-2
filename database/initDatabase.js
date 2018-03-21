@@ -6,6 +6,7 @@ const util = require('../common/util');
 
 const dbPath = path.resolve(__dirname, 'education.db');
 const userDataPath = path.resolve(__dirname, 'initdata', 'initUser.json');
+const badgeDataPath = path.resolve(__dirname, 'initdata', 'initBadge.json');
 
 const createUserTable = async () => {
     await database.open(dbPath);
@@ -29,6 +30,32 @@ const createUserTable = async () => {
     return userRows;
 };
 
-createUserTable().catch((e) => {
-    console.log(e);
-});
+const createBadgeTable = async () => {
+    await database.open(dbPath);
+    await database.run('DROP TABLE IF EXISTS badges;');
+    await database.run('CREATE TABLE badges(id INTEGER PRIMARY KEY AUTOINCREMENT, name text, description text);');
+
+    const query = `INSERT INTO badges(name, description) VALUES (?, ?)`;
+    const lstBadge = JSON.parse(fs.readFileSync(badgeDataPath, 'utf8'));
+
+    for (let i = 0; i < lstBadge.length; i++) {
+        let badge = lstBadge[i];
+        await database.runWithPrepareStatement(query, [badge.name, badge.description]);
+    }
+
+    const badgeRows = await database.all(`SELECT * FROM badges`);
+    console.log(badgeRows);
+
+    database.close();
+
+    return badgeRows;
+};
+
+// createUserTable()
+//     .then(() => createBadgeTable())
+//     .catch((e) => console.log(e));
+
+Promise.resolve()
+    .then(() => createUserTable())
+    .then(() => createBadgeTable())
+    .catch((e) => console.log(e));
