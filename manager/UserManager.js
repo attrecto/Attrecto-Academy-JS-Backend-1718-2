@@ -23,7 +23,13 @@ const createUser = async (message) => {
     //create user
     const createUserQuery = `INSERT INTO users(email, name, password) VALUES (?, ?, ?)`;
 
-    await database.runWithPrepareStatement(createUserQuery, [userObject.email, userObject.name, userObject.password]);
+    const password = await util.hashPassword(userObject.password);
+
+    await database.runWithPrepareStatement(createUserQuery, [
+        userObject.email,
+        userObject.name,
+        password
+    ]);
 
     const selectUserQuery = `SELECT id, email, name FROM users WHERE email= ?`;
     // no need await here, because in higher level there will be one. 
