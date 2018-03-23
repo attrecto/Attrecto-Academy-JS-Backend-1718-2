@@ -93,7 +93,24 @@ const updateBadge = async (message) => {
     return badge;
 };
 
-const deleteBadge = async (message) => {};
+const deleteBadge = async (message) => {
+    const {id} = message;
+
+    await database.open(dbPath);
+
+    const query = "SELECT * FROM badges WHERE id = ?";
+    const badge = await database.get(query, [id]);
+
+    if (!badge) {
+        throw new AppError(404, 'Badge not found!')
+    }
+
+    const deleteQuery = `DELETE FROM badges WHERE id = ?`;
+
+    await database.runWithPrepareStatement(deleteQuery, [id]);
+
+    return;
+};
 
 module.exports = {
     getBadges,
