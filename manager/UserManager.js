@@ -21,6 +21,8 @@ const createUser = async (message) => {
     }
 
     //create user
+    userObject.password = await util.hashPassword(userObject.password);
+
     const createUserQuery = `INSERT INTO users(email, name, password) VALUES (?, ?, ?)`;
 
     const password = await util.hashPassword(userObject.password);
@@ -47,6 +49,9 @@ const login = async (message) => {
 
 
     const user = await getUserByEmail({email});
+    if (!user) {
+        throw new AppError(400, 'This email address and password combination is not valid. Please try again!')
+    }
 
     const isValidPassword = await util.validatePassword(user, password);
     if (!isValidPassword) {

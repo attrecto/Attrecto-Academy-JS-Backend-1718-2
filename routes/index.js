@@ -17,7 +17,7 @@ router.post('/user', async (req, res, next) => {
     } catch (e) {
         util.errorHandling(e, next);
     }
-})
+});
 
 router.post('/login', async (req, res, next) => {
     try {
