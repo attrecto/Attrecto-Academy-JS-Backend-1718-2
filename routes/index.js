@@ -47,6 +47,19 @@ router.get('/badge', async (req, res, next) => {
     }
 });
 
+router.post('/badge/', async (req, res, next) => {
+    try {
+        const message = {
+            data: req.body
+        };
+
+        const result = await badgeManager.createBadge(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
+
 router.get('/badge/:badgeId', async (req, res, next) => {
     try {
         const message = {
