@@ -73,5 +73,19 @@ router.get('/badge/:badgeId', async (req, res, next) => {
     }
 });
 
+router.patch('/badge/:badgeId', async (req, res, next) => {
+    try {
+        const message = {
+            id: req.params.badgeId,
+            data: req.body
+        };
+
+        const result = await badgeManager.updateBadge(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
+
 module.exports = router;
 
