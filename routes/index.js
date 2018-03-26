@@ -6,20 +6,6 @@ const { userManager, badgeManager } = rootRequired('manager');
 const util = rootRequired('common/util');
 const authorization = rootRequired('middleware/authorization');
 
-router.post('/user/:userId/badge/:badgeId', async (req, res, next) => {
-    try {
-        const message = {
-            userId: req.params.userId,
-            badgeId: req.params.badgeId
-        };
-
-        const result = await userManager.addBadgeToUser(message);
-        res.send(result);
-    } catch (e) {
-        util.errorHandling(e, next);
-    }
-});
-
 router.post('/user', async (req, res, next) => {
     try {
         const message = {
@@ -47,6 +33,34 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.use(authorization);
+
+router.post('/user/:userId/badge/:badgeId', async (req, res, next) => {
+    try {
+        const message = {
+            userId: req.params.userId,
+            badgeId: req.params.badgeId
+        };
+
+        const result = await userManager.addBadgeToUser(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
+
+router.delete('/user/:userId/badge/:badgeId', async (req, res, next) => {
+    try {
+        const message = {
+            userId: req.params.userId,
+            badgeId: req.params.badgeId
+        };
+
+        const result = await userManager.removeBadgeFromUser(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
 
 router.get('/hello', (req, res, next) => {
     res.send(`Hello ${req.tokenDetails.name}!`);

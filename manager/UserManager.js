@@ -118,8 +118,34 @@ const addBadgeToUser = async (message) => {
     return await database.get(userBadgeQuery, [userId, badgeId]);
 };
 
+const removeBadgeFromUser = async (message) => {
+    const {
+        userId,
+        badgeId
+    } = message;
+
+    await database.open(dbPath);
+
+    //check user badge
+    const userBadgeCountQuery = "SELECT COUNT(*) AS count FROM user_badges WHERE user_id = ? AND badge_id = ?";
+    const userBadgeCount = await database.get(userBadgeCountQuery, [userId, badgeId]);
+    if (userBadgeCount.count === 0) {
+        throw new AppError(400, 'No user has connected with the selected badge!');
+    }
+
+    const deleteUserBadgesQuery = `DELETE FROM user_badges WHERE user_id = ? AND badge_id = ?`;
+
+    await database.runWithPrepareStatement(deleteUserBadgesQuery, [
+        userId,
+        badgeId
+    ]);
+
+    return;
+};
+
 module.exports = {
     createUser,
     login,
-    addBadgeToUser
+    addBadgeToUser,
+    removeBadgeFromUser
 };
