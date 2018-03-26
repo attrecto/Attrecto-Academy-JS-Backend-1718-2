@@ -88,7 +88,7 @@ router.get('/badge', async (req, res, next) => {
     }
 });
 
-router.post('/badge/', async (req, res, next) => {
+router.post('/badge', async (req, res, next) => {
     try {
         const message = {
             data: req.body
