@@ -62,6 +62,19 @@ router.delete('/user/:userId/badge/:badgeId', async (req, res, next) => {
     }
 });
 
+router.get('/user/:userId/badge', async (req, res, next) => {
+    try {
+        const message = {
+            userId: req.params.userId
+        };
+
+        const result = await userManager.getUserBadges(message);
+        res.send(result);
+    } catch (e) {
+        util.errorHandling(e, next);
+    }
+});
+
 router.get('/hello', (req, res, next) => {
     res.send(`Hello ${req.tokenDetails.name}!`);
 });

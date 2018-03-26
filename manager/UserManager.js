@@ -77,6 +77,24 @@ const getUserByEmail = async (message) => {
     return database.get(selectUserQuery, [email]);
 };
 
+const getUserBadges = async (message) => {
+    const {
+        userId,
+    } = message;
+
+    await database.open(dbPath);
+
+    //check user
+    const userCountQuery = "SELECT COUNT(*) AS count FROM users WHERE id = ?";
+    const userCount = await database.get(userCountQuery, [userId]);
+    if (userCount.count === 0) {
+        throw new AppError(404, 'User not found!');
+    }
+
+    const userBadgesQuery = "SELECT * FROM user_badges WHERE user_id = ?";
+    return await database.all(userBadgesQuery, [userId]);
+};
+
 const addBadgeToUser = async (message) => {
     const {
         userId,
@@ -146,6 +164,7 @@ const removeBadgeFromUser = async (message) => {
 module.exports = {
     createUser,
     login,
+    getUserBadges,
     addBadgeToUser,
     removeBadgeFromUser
 };
