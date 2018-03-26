@@ -97,6 +97,7 @@ const deleteBadge = async (message) => {
     const {id} = message;
 
     await database.open(dbPath);
+    await database.run('PRAGMA foreign_keys = ON');
 
     const query = "SELECT * FROM badges WHERE id = ?";
     const badge = await database.get(query, [id]);
