@@ -39,8 +39,12 @@ const createBadgeTable = async () => {
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             user_id integer NOT_NULL, 
             badge_id integer NOT_NULL,
-            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+                ON DELETE CASCADE 
+                ON UPDATE RESTRICT,
             FOREIGN KEY (badge_id) REFERENCES badges(id)
+                ON DELETE CASCADE 
+                ON UPDATE RESTRICT
         );
     `);
 
