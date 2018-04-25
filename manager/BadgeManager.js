@@ -14,7 +14,20 @@ const getBadges = async (message) => {
 
 const createBadge = async (message) => {};
 
-const getBadge = async (message) => {};
+const getBadge = async (message) => {
+  const {id} = message;
+
+  await database.open(dbPath);
+
+  const query = "SELECT * FROM badges WHERE id = ?";
+  const badge = await database.get(query, [id]);
+
+  if (!badge) {
+    throw new AppError(404, 'Badge not found!')
+  }
+
+  return badge;
+};
 
 const updateBadge = async (message) => {};
 

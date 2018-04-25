@@ -38,6 +38,19 @@ router.get('/hello', (req, res, next) => {
     res.send(`Hello ${req.tokenDetails.name}!`);
 });
 
+router.get('/badge/:badgeId', async (req, res, next) => {
+  try {
+    const message = {
+      id: req.params.badgeId
+    };
+
+    const result = await badgeManager.getBadge(message);
+    res.send(result);
+  } catch (e) {
+    util.errorHandling(e, next);
+  }
+});
+
 router.get('/badge', async (req, res, next) => {
   try {
     const result = await badgeManager.getBadges();
