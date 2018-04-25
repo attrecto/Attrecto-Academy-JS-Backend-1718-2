@@ -5,7 +5,11 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, '..', 'database', 'education.db');
 
 const getBadges = async (message) => {
+  await database.open(dbPath);
 
+  const query = "SELECT * FROM badges";
+
+  return database.all(query);
 };
 
 const createBadge = async (message) => {};
