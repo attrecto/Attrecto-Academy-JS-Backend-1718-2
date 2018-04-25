@@ -4,7 +4,9 @@ const database = rootRequired('database');
 const path = require('path');
 const dbPath = path.resolve(__dirname, '..', 'database', 'education.db');
 
-const getBadges = async (message) => {};
+const getBadges = async (message) => {
+
+};
 
 const createBadge = async (message) => {};
 
