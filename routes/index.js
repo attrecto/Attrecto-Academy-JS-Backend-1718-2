@@ -38,6 +38,20 @@ router.get('/hello', (req, res, next) => {
     res.send(`Hello ${req.tokenDetails.name}!`);
 });
 
+router.post('/user/:userId/badge/:badgeId', async (req, res, next) => {
+  try {
+    const message = {
+      userId: req.params.userId,
+      badgeId: req.params.badgeId
+    };
+
+    const result = await userManager.addBadgeToUser(message);
+    res.send(result);
+  } catch (e) {
+    util.errorHandling(e, next);
+  }
+});
+
 router.get('/badge/:badgeId', async (req, res, next) => {
   try {
     const message = {
