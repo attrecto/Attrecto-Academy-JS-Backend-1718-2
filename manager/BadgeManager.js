@@ -12,7 +12,32 @@ const getBadges = async (message) => {
   return database.all(query);
 };
 
-const createBadge = async (message) => {};
+const createBadge = async (message) => {
+  const {
+    data: badgeObject
+  } = message;
+
+  await database.open(dbPath);
+
+  //check name
+  const name = badgeObject.name;
+  let checkBadgeQuery = `SELECT * FROM badges WHERE name = ?`;
+  const foundBadge = await database.get(checkBadgeQuery, [name]);
+  if (foundBadge) {
+    throw new AppError(400, "Badge already exists with this name.");
+  }
+
+  const createBadgeQuery = `INSERT INTO badges(name, description) VALUES (?, ?)`;
+
+  await database.runWithPrepareStatement(createBadgeQuery, [
+    badgeObject.name,
+    badgeObject.description
+  ]);
+
+  const selectBadgeQuery = `SELECT * FROM badges WHERE name = ?`;
+
+  return database.get(selectBadgeQuery, [name]);
+};
 
 const getBadge = async (message) => {
   const {id} = message;
