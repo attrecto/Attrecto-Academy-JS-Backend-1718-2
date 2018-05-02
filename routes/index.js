@@ -65,6 +65,19 @@ router.patch('/badge/:badgeId', async (req, res, next) => {
   }
 });
 
+router.delete('/badge/:badgeId', async (req, res, next) => {
+  try {
+    const message = {
+      id: req.params.badgeId
+    };
+
+    const result = await badgeManager.deleteBadge(message);
+    res.status(204).send();
+  } catch (e) {
+    util.errorHandling(e, next);
+  }
+});
+
 router.post('/badge/', async (req, res, next) => {
   try {
     const message = {
