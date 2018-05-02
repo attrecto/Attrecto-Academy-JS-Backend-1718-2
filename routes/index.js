@@ -52,6 +52,20 @@ router.post('/user/:userId/badge/:badgeId', async (req, res, next) => {
   }
 });
 
+router.delete('/user/:userId/badge/:badgeId', async (req, res, next) => {
+  try {
+    const message = {
+      userId: req.params.userId,
+      badgeId: req.params.badgeId
+    };
+
+    const result = await userManager.removeBadgeFromUser(message);
+    res.send(result);
+  } catch (e) {
+    util.errorHandling(e, next);
+  }
+});
+
 router.get('/badge/:badgeId', async (req, res, next) => {
   try {
     const message = {
