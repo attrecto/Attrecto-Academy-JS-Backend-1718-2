@@ -76,74 +76,80 @@ const getUserByEmail = async (message) => {
 };
 
 const addBadgeToUser = async (message) => {
-  const {
-    userId,
-    badgeId
-  } = message;
+    const {
+        userId,
+        badgeId
+    } = message;
 
-  await database.open(dbPath);
+    await database.open(dbPath);
 
-  //check user
-  const userCountQuery = "SELECT COUNT(*) AS count FROM users WHERE id = ?";
-  const userCount = await database.get(userCountQuery, [userId]);
-  if (userCount.count === 0) {
-    throw new AppError(404, 'User not found!');
-  }
+    //check user
+    const userCountQuery = "SELECT COUNT(*) AS count FROM users WHERE id = ?";
+    const userCount = await database.get(userCountQuery, [userId]);
+    if (userCount.count === 0) {
+        throw new AppError(404, 'User not found!');
+    }
 
-  //check badge
-  const badgeCountQuery = "SELECT COUNT(*) AS count FROM badges WHERE id = ?";
-  const badgeCount = await database.get(badgeCountQuery, [badgeId]);
-  if (badgeCount.count === 0) {
-    throw new AppError(404, 'Badge not found!');
-  }
+    //check badge
+    const badgeCountQuery = "SELECT COUNT(*) AS count FROM badges WHERE id = ?";
+    const badgeCount = await database.get(badgeCountQuery, [badgeId]);
+    if (badgeCount.count === 0) {
+        throw new AppError(404, 'Badge not found!');
+    }
 
-  //check user badge
-  const userBadgeCountQuery = "SELECT COUNT(*) AS count FROM user_badges WHERE user_id = ? AND badge_id = ?";
-  const userBadgeCount = await database.get(userBadgeCountQuery, [userId, badgeId]);
-  if (userBadgeCount.count > 0) {
-    throw new AppError(400, 'User has already connected with the selected badge!');
-  }
+    //check user badge
+    const userBadgeCountQuery = "SELECT COUNT(*) AS count FROM user_badges WHERE user_id = ? AND badge_id = ?";
+    const userBadgeCount = await database.get(userBadgeCountQuery, [userId, badgeId]);
+    if (userBadgeCount.count > 0) {
+        throw new AppError(400, 'User has already connected with the selected badge!');
+    }
 
-  const updateUserBadgesQuery = `INSERT INTO user_badges (user_id, badge_id) values (?, ?)`;
+    const updateUserBadgesQuery = `INSERT INTO user_badges (user_id, badge_id) values (?, ?)`;
 
-  await database.runWithPrepareStatement(updateUserBadgesQuery, [
-    userId,
-    badgeId
-  ]);
+    await database.runWithPrepareStatement(updateUserBadgesQuery, [
+        userId,
+        badgeId
+    ]);
 
-  //check user badge
-  const userBadgeQuery = "SELECT * FROM user_badges WHERE user_id = ? AND badge_id = ?";
-  return await database.get(userBadgeQuery, [userId, badgeId]);
+    //check user badge
+    const userBadgeQuery = "SELECT * FROM user_badges WHERE user_id = ? AND badge_id = ?";
+    return await database.get(userBadgeQuery, [userId, badgeId]);
 };
 
 const removeBadgeFromUser = async (message) => {
-  const {
-    userId,
-    badgeId
-  } = message;
+    const {
+        userId,
+        badgeId
+    } = message;
 
-  await database.open(dbPath);
+    await database.open(dbPath);
 
-  //check user badge
-  const userBadgeCountQuery = "SELECT COUNT(*) AS count FROM user_badges WHERE user_id = ? AND badge_id = ?";
-  const userBadgeCount = await database.get(userBadgeCountQuery, [userId, badgeId]);
-  if (userBadgeCount.count === 0) {
-    throw new AppError(400, 'No user has connected with the selected badge!');
-  }
+    //check user badge
+    const userBadgeCountQuery = "SELECT COUNT(*) AS count FROM user_badges WHERE user_id = ? AND badge_id = ?";
+    const userBadgeCount = await database.get(userBadgeCountQuery, [userId, badgeId]);
+    if (userBadgeCount.count === 0) {
+        throw new AppError(400, 'No user has connected with the selected badge!');
+    }
 
-  const deleteUserBadgesQuery = `DELETE FROM user_badges WHERE user_id = ? AND badge_id = ?`;
+    const deleteUserBadgesQuery = `DELETE FROM user_badges WHERE user_id = ? AND badge_id = ?`;
 
-  await database.runWithPrepareStatement(deleteUserBadgesQuery, [
-    userId,
-    badgeId
-  ]);
-
-  return;
+    await database.runWithPrepareStatement(deleteUserBadgesQuery, [
+        userId,
+        badgeId
+    ]);
 };
+
+const getUsers = async () => {
+    await database.open(dbPath);
+    const selectUserQuery = `SELECT id, email, name FROM users`;
+    return database.all(selectUserQuery);
+};
+
 
 module.exports = {
     createUser,
     login,
     addBadgeToUser,
-    removeBadgeFromUser
+    removeBadgeFromUser,
+    getUsers
 };
