@@ -21,7 +21,7 @@ const createUser = async (message) => {
     }
 
     //create user
-    userObject.password = await util.hashPassword(userObject.password);
+    // userObject.password = await util.hashPassword(userObject.password);
 
     const createUserQuery = `INSERT INTO users(email, name, password) VALUES (?, ?, ?)`;
 
