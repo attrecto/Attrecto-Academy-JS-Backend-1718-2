@@ -141,8 +141,16 @@ const removeBadgeFromUser = async (message) => {
 
 const getUsers = async () => {
     await database.open(dbPath);
+
     const selectUserQuery = `SELECT id, email, name FROM users`;
-    return database.all(selectUserQuery);
+    const users = await database.all(selectUserQuery);
+
+    users.forEach(async (user) => {
+        const userBadgeQuery = "SELECT badge_id FROM user_badges WHERE user_id = ?";
+        user.badges = await database.runWithPrepareStatement(userBadgeQuery, [user.id])
+    });
+
+    return users;
 };
 
 
