@@ -145,12 +145,11 @@ const getUsers = async () => {
     const selectUserQuery = `SELECT id, email, name FROM users`;
     const users = await database.all(selectUserQuery);
 
-    users.forEach(async (user) => {
-        const userBadgeQuery = "SELECT badge_id FROM user_badges WHERE user_id = ?";
-        user.badges = await database.runWithPrepareStatement(userBadgeQuery, [user.id])
-    });
-
-    return users;
+    return await Promise.all(users.map(async (user) => {
+        const userBadgeQuery = "SELECT b.* FROM user_badges as ub, badges as b WHERE ub.badge_id = b.id and ub.user_id = ?";
+        user.badges = await database.all(userBadgeQuery, [user.id]);
+        return user;
+    }));
 };
 
 
